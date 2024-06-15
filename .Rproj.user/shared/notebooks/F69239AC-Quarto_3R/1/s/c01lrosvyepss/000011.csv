@@ -1,0 +1,6 @@
+"0","proc_data <- data_proc %>% rename(""ns_demo""=P11STGBS.A, #nivel satisfacción democracia
+"
+"2","Error: unexpected symbol in:
+""data_proc <- data_proc %>% dplyr::filter(idenpa==152)
+proc_data <- data_proc %>% rename(""ns_demo""
+"

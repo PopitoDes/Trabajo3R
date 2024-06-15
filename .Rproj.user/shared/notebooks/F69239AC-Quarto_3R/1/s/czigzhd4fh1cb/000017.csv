@@ -1,0 +1,2 @@
+"0","ggplot(proc_data, aes(x = val_demo)) +"
+"0","  geom_bar()"

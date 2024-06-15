@@ -1,0 +1,5 @@
+"0","proc_data %>% ggplot(aes (x = SEP)) +"
+"0","  geom_bar(fill = ""red"")+"
+"0","  labs(title = ""Situación Económica País"","
+"0","       x = ""Situación Económica País"","
+"0","       y = ""Frecuencia"")"
