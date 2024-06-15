@@ -3,9 +3,9 @@
     "path": "~/Github/Trabajo3/procesamiento/Tablas1.R",
     "project_path": "procesamiento/Tablas1.R",
     "type": "r_source",
-    "hash": "3068445",
+    "hash": "0",
     "contents": "",
-    "dirty": false,
+    "dirty": true,
     "created": 1717715664330.0,
     "source_on_save": false,
     "relative_order": 2,
@@ -13,15 +13,15 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "11,22",
-        "scrollLine": "0"
+        "cursorPosition": "100,0",
+        "scrollLine": "77"
     },
-    "folds": "30|20|77|24|\n",
+    "folds": "",
     "lastKnownWriteTime": 1718352946,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1718352946042,
+    "last_content_update": 1718491022444,
     "read_only": false,
     "read_only_alternatives": []
 }

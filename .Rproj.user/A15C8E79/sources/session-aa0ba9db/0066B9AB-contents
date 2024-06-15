@@ -27,8 +27,7 @@ data_proc <- data %>%
   select(P11STGBS.A, #Nivel satisfacción con la democracia en el país.
          P10STGBS, #Preferencia democracia o gobierno autoritario.
          P18ST.A, #La democracia es el mejor sistema de gobierno
-         P18STM.B, #No importa si un gobierno no democrático llega si soluciona problemas
-         P18N.D, #Para que la democracia funcione hay que garantizar variedad de fuentes de información de medios de comunicación.
+         P18STM.B, #No importa si un gobierno no democrático llega si soluciona problemas.
          P18ST.I, #La democracia permite que se solucionen los problemas que tenemos.
          P20STM, #Apoyar o no gobierno militar.
          P16ST, #Posicionamiento izquierda/dereccha.
@@ -55,7 +54,6 @@ proc_data <- data_proc %>% rename("ns_demo"=P11STGBS.A, #nivel satisfacción dem
                                   "demo_auto"=P10STGBS, #Democracia/autoritarismo
                                   "na_demo"=P18ST.A, #nivel de acuerdo: democracia como mejor sistema de gobierno
                                   "na_nodemo"=P18STM.B, #nivel de acuerdo: gobierno no democrático solucione problemas
-                                  "na_vinfo"=P18N.D, #Nivel de acuerdo: Para que funcione democracia hay que garantizar variedad de fuentes de información.
                                   "na_spdemo"=P18ST.I, #Nivel de acuerdo: Democracia permite que se solucionen problemas que tenemos.
                                   "apoyo_gm"=P20STM, #Apoyo a un gobierno militar. Variable dicotomica
                                   "izq_der"=P16ST, #Posicionamiento izquierda-derecha.
@@ -278,6 +276,14 @@ summary(proc_data$val_demo)
 frq(proc_data$val_demo)
 
 #Recodificar para que valoraciones positivas sean los valores mayores.
+
+frq(proc_data$ns_demo)
+proc_data$ns_demo <-car::recode(proc_data$ns_demo, "1=4;2=3;3=2;4=1")
+frq(proc_data$ns_demo)
+
+frq(proc_data$demo_auto)
+proc_data$demo_auto <-car::recode(proc_data$demo_auto, "1=3;3=1")
+frq(proc_data$demo_auto)
 
 frq(proc_data$SEP)
 proc_data$SEP <-car::recode(proc_data$SEP, "1=5; 2=4;3=3;4=2;5=1")
