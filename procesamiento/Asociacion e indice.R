@@ -47,9 +47,6 @@ get_label(proc_data$na_demo)
 proc_data$na_nodemo <-set_label(x = proc_data$na_nodemo,label = "NA: Gob. no democrático llegara a resolver problemas")
 get_label(proc_data$na_nodemo)
 
-proc_data$na_vinfo <-set_label(x = proc_data$na_vinfo,label = "NA: Variedad de Fuentes de Información")
-get_label(proc_data$na_vinfo)
-
 proc_data$na_spdemo <-set_label(x = proc_data$na_spdemo,label = "NA: Democracia permite solución problemas")
 get_label(proc_data$na_spdemo)
 
@@ -132,6 +129,10 @@ indicadores2023 = indicadores2023 %>%
   mutate(ISN = mean(c(Eco, CNF, VAL))) %>%
   ungroup()
 
+summary(indicadores2023$Eco)
+summary(indicadores2023$CNF)
+summary(indicadores2023$VAL)
+
 #Observamos los primeros 10 casos del resultado:
 
 indicadores2023 %>% select(ISN) %>% head(10)
@@ -148,5 +149,25 @@ data2 <- proc_data %>%
 
 cor(data2)
 
+#Alfa de Chronbach.
 
-                                  
+psych::alpha(data2)
+
+
+
+#Recodifcamos datos para la escala:
+
+frq(data2)
+
+data2$SEP <-car::recode(data2$SEP, "1=0;2=1;3=2;4=3;5=4")
+data2$PSEP <-car::recode(data2$PSEP, "1=0;2=1;3=2;4=3;5=4")
+data2$FMSP <-car::recode(data2$FMSP, "1=0;2=1;3=2;4=3;5=4")
+data2$SPF <-car::recode(data2$SPF, "1=0;2=1;3=2;4=3;5=4")                                  
+
+frq(data2)
+
+data2 <- data2 %>%
+  rowwise() %>%
+  mutate(DECO = sum(SEP, PSEP, FMSP, SPF))
+summary(data2$DECO)
+

@@ -41,9 +41,6 @@ get_label(proc_data$na_demo)
 proc_data$na_nodemo <-set_label(x = proc_data$na_nodemo,label = "NA: Gob. no democrático llegara a resolver problemas")
 get_label(proc_data$na_nodemo)
 
-proc_data$na_vinfo <-set_label(x = proc_data$na_vinfo,label = "NA: Variedad de Fuentes de Información")
-get_label(proc_data$na_vinfo)
-
 proc_data$na_spdemo <-set_label(x = proc_data$na_spdemo,label = "NA: Democracia permite solución problemas")
 get_label(proc_data$na_spdemo)
 
@@ -76,6 +73,11 @@ get_label(proc_data$FMSP)
 
 proc_data$SPF <- set_label(x = proc_data$SPF, label = "Sit. Eco. Personal y familiar")
 get_label(proc_data$SPF)
+
+proc_data$sexo <- set_label(x = proc_data$sexo, label = "Sexo")
+proc_data$edad <- set_label(x = proc_data$edad, label = "Edad")
+proc_data$val_demo <- set_label(x = proc_data$val_demo, label = "Valoración Democracia")
+
 ####################
 
 #Tablas descriptivas de variables (sección metodológica)
@@ -95,13 +97,13 @@ proc_data %>% ggplot(aes(x = val_demo)) +
   labs(title = "Valoración Democracia",
        x = "Valoración Democracia",
        y = "Frecuencia")
-#Nivel de satisfacción democracia.
+#Situación económica país..
 ggplot()
-ggplot(proc_data, aes(x = ns_demo)) +
+ggplot(proc_data, aes(x = SEP)) +
   geom_bar()
-proc_data %>% ggplot(aes (x = ns_demo)) +
+proc_data %>% ggplot(aes (x = SEP)) +
   geom_bar(fill = "red")+
-  labs(title = "Nivel Satisfacción Democracia",
-       x = "Nivel Satisfacción Democracia",
+  labs(title = "Situación Económica País",
+       x = "Situación Económica País",
        y = "Frecuencia")
 

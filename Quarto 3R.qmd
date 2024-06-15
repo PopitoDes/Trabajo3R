@@ -10,7 +10,29 @@ editor: visual
 Para observar de forma general la conformidad con la situación nacional en Chile se hará una revisión por distintos variables de la encuesta Latinobarometro.
 
 ```{r}
-load(file = "data/latinobarometro_proc.RData")
+pacman::p_load(sjlabelled,
+               dplyr,
+               stargazer,
+               sjmisc,
+               summarytools,
+               kableExtra,
+               sjPlot,
+               corrplot,
+               sessioninfo,
+               ggplot2,
+               psych,
+               car,
+               tidyverse,
+               haven)
+              
+```
+
+```{r}
+load(file = "input/Latinobarometro.RData")
+```
+
+```{r}
+data <- Latinobarometro_2023_Esp_v1_0
 ```
 
 Con la base de datos cargada seleccionamos las variables:
@@ -69,211 +91,99 @@ Y luego cambiamos las etiquetas:
 
 ```{r}
 proc_data$ns_demo <- set_label(x = proc_data$ns_demo,label = "Satisfacción Democracia")
-get_label(proc_data$ns_demo)                                  
-
+                          
 proc_data$demo_auto <- set_label(x = proc_data$demo_auto,label = "Pref. Gob. Democrático/Autoritario")
-get_label(proc_data$demo_auto)
+
 
 proc_data$na_demo <- set_label(x = proc_data$na_demo,label = "NA: Democracia mejor sistema de Gob.")         
-get_label(proc_data$na_demo)
+
 
 proc_data$na_nodemo <-set_label(x = proc_data$na_nodemo,label = "NA: Gob. no democrático llegara a resolver problemas")
-get_label(proc_data$na_nodemo)
+
 
 proc_data$na_spdemo <-set_label(x = proc_data$na_spdemo,label = "NA: Democracia permite solución problemas")
-get_label(proc_data$na_spdemo)
+
 
 proc_data$apoyo_gm <-set_label(x = proc_data$apoyo_gm,label = "Apoyo a gobierno militar")
-get_label(proc_data$apoyo_gm)
+
 
 proc_data$izq_der <-set_label(x = proc_data$izq_der, label = "Posicionamiento político izq-der")
-get_label(proc_data$izq_der)
+
 
 proc_data$cnf_pers <-set_label(x = proc_data$cnf_pers, label = "Confianza en personas")
-get_label(proc_data$cnf_pers)
+
 
 proc_data$cnf_FA <- set_label(x = proc_data$cnf_FA, label = "Confianza Fuerzas Armadas")
-get_label(proc_data$cnf_FA)
+
 
 proc_data$cnf_FP <- set_label(x = proc_data$cnf_FP, label = "Confianza Fuerzas Policiales")
-get_label(proc_data$cnf_FP)
+
 
 proc_data$cnf_PJ <- set_label(x = proc_data$cnf_PJ, label = "Confianza Poder Judicial")
-get_label(proc_data$cnf_PJ)
+
 
 proc_data$SEP <- set_label(x = proc_data$SEP, label = "Situación Económica País")
-get_label(proc_data$SEP)
+
 
 proc_data$PSEP <- set_label(x = proc_data$PSEP, label = "Sit. Eco. M/P que pasado")
-get_label(proc_data$PSEP)
+
 
 proc_data$FMSP <- set_label(x = proc_data$FMSP, label = "Sit. Eco. M/P que futuro")
-get_label(proc_data$FMSP)
+
 
 proc_data$SPF <- set_label(x = proc_data$SPF, label = "Sit. Eco. Personal y familiar")
-get_label(proc_data$SPF)
+
 ```
 
 Eliminar los casos perdidos (NA):
 
 ```{r}
-frq(proc_data$ns_demo)
-
 proc_data$ns_demo <- recode(proc_data$ns_demo, "c(-2,-1)=NA")
-
-frq(proc_data$ns_demo)
-
-#Eliminar NA en Pref Gob. Democrático/Autoritario.
-frq(proc_data$demo_auto)
-
+#Eliminar NA en Pref Gob. Democrático/Autoritarios
 proc_data$demo_auto <- recode(proc_data$demo_auto, "c(-2,-1)=NA")
-
-frq(proc_data$demo_auto)
-
 #Eliminar NA en nivel de acuerdo: democracia mejor sistema de gobierno.
-
-frq(proc_data$na_demo)
-
 proc_data$na_demo <- recode(proc_data$na_demo, "c(-5)=NA")
-
-frq(proc_data$na_demo)
-
 #Eliminar NA en nivel de acuerdo: gobierno no democratico llegara a resolver problemas.
-
-frq(proc_data$na_nodemo)
-
 proc_data$na_nodemo <- recode(proc_data$na_nodemo, "c(-5)=NA")
-
-frq(proc_data$na_nodemo)                              
-
 #Eliminar NA en nivel de acuerdo: Democracia permite solución de problemas.
-
-frq(proc_data$na_spdemo)
-
 proc_data$na_spdemo <-recode(proc_data$na_spdemo, "c(-5)=NA")
-
-frq(proc_data$na_spdemo)
-
 #Eliminar NA en Apoyo a Gobierno Militar.
-
-frq(proc_data$apoyo_gm)
-
 proc_data$apoyo_gm <-recode(proc_data$apoyo_gm, "c(-2,-1)=NA")
-
-frq(proc_data$apoyo_gm)
-
 #Eliminar NA en posicionamiento político izquierda-derecha.
-
-frq(proc_data$izq_der)
-
 proc_data$izq_der <-recode(proc_data$izq_der, "c(-2,-1,97)=NA")
-
-frq(proc_data$izq_der)
-
 #Eliminar NA en confianza en personas
-
-frq(proc_data$cnf_pers)
-
 proc_data$cnf_pers <-recode(proc_data$cnf_pers, "c(-5)=NA")
-
-frq(proc_data$cnf_pers)
-
 #Eliminar NA en confianza en fuerzas armadas
-
-frq(proc_data$cnf_FA)
-
 proc_data$cnf_FA <-recode(proc_data$cnf_FA, "c(-2,-1)=NA")
-
-frq(proc_data$cnf_FA)
-#Eliminar NA en confianza en fuerzas policiales
-
-frq(proc_data$cnf_FP)
-
+#Eliminar NA en confianza en fuerzas policiales.
 proc_data$cnf_FP <-recode(proc_data$cnf_FP, "c(-2,-1)=NA")
-
-frq(proc_data$cnf_FP)
-
 #Eliminar NA en confianza en poder judicial 
-
-frq(proc_data$cnf_PJ)
-
 proc_data$cnf_PJ <-recode(proc_data$cnf_PJ, "c(-2,-1)=NA")
-
-frq(proc_data$cnf_PJ)
-
 #Eliminar NA en situación económica país
-
-frq(proc_data$SEP)
-
 proc_data$SEP <-recode(proc_data$SEP, "-2=NA")
-
-frq(proc_data$SEP)
-
 #Eliminar NA en Sit. Eco. M/P que pasado
-
-frq(proc_data$PSEP)
-
 proc_data$PSEP <-recode(proc_data$PSEP, "c(-2,-1)=NA")
-
-frq(proc_data$PSEP)
 #Eliminar NA en Sit. Eco M/P que futuro
-
-frq(proc_data$FMSP)
-
 proc_data$FMSP <-recode(proc_data$FMSP, "c(-2,-1)=NA")
-
-frq(proc_data$FMSP)
 #Eliminar NA en Sit. Eco personal y familiar
-
-frq(proc_data$SPF)
-
 proc_data$SPF <-recode(proc_data$SPF, "c(-2,-1)=NA")
 
-frq(proc_data$SPF)
 ```
 
 Además, codificamos las variables para que las valoraciones positivas sean los números mayores:
 
 ```{r}
-frq(proc_data$ns_demo)
+
 proc_data$ns_demo <-car::recode(proc_data$ns_demo, "1=4;2=3;3=2;4=1")
-frq(proc_data$ns_demo)
-
-frq(proc_data$demo_auto)
 proc_data$demo_auto <-car::recode(proc_data$demo_auto, "1=3;3=1")
-frq(proc_data$demo_auto)
-
-frq(proc_data$SEP)
 proc_data$SEP <-car::recode(proc_data$SEP, "1=5; 2=4;3=3;4=2;5=1")
-frq(proc_data$SEP)
-
-frq(proc_data$PSEP)
 proc_data$PSEP <- car::recode(proc_data$PSEP, "1=5; 2=4;3=3;4=2;5=1")
-frq(proc_data$PSEP)
-
-frq(proc_data$FMSP)
 proc_data$FMSP <- car::recode(proc_data$FMSP, "1=5; 2=4;3=3;4=2;5=1")
-frq(proc_data$FMSP)
-
-frq(proc_data$SPF)
 proc_data$SPF <- car::recode(proc_data$SPF, "1=5; 2=4;3=3;4=2;5=1")
-frq(proc_data$SPF)
-
-frq(proc_data$cnf_pers)
 proc_data$cnf_pers <-car::recode(proc_data$cnf_pers, "1=2;2=1")
-frq(proc_data$cnf_pers)
-
-frq(proc_data$cnf_FA)
 proc_data$cnf_FA <-car::recode(proc_data$cnf_FA, "1=4;2=3;3=2;4=1")
-frq(proc_data$cnf_FA)
-
-frq(proc_data$cnf_FP)
 proc_data$cnf_FP <-car::recode(proc_data$cnf_FP, "4=1;3=2;2=3;1=4")
-frq(proc_data$cnf_FP)
-
-frq(proc_data$cnf_PJ)
 proc_data$cnf_PJ <-car::recode(proc_data$cnf_PJ, "4=1;3=2;2=3;1=4")
-frq(proc_data$cnf_PJ)
 ```
 
 Y además, generamos una nueva variable de "valoración de la democracia" distinto a nivel de satisfacción de la democracia, con la intención de observar posibles variaciones si el item se crea con distintas variables referentes a la democracia.
@@ -291,15 +201,8 @@ proc_data$val_demo <- car::recode(proc_data$val_demo, "c(3,4,5)=1; c(6,7)=2; c(8
 frq(proc_data$val_demo)
 
 #Con la nueva variable lista, hay que cambiar la etiqueta
-
-get_label(proc_data$val_demo)
-
 proc_data$val_demo <-set_label(x = proc_data$val_demo,label ="Valoración Democracia")
-
-get_label(proc_data$val_demo)
-
 #Cambiar etiquetas.
-
 proc_data$val_demo <- set_labels(proc_data$val_demo,
                                 labels=c( "Muy Mala"=1,
                                            "Mala"=2,
@@ -314,11 +217,8 @@ Por último, recodificamos las variables restantes:
 
 ```{r}
 ##variables edad y edad.
-
 frq(proc_data$sexo)
-
 #Recodoficamos por convención general donde mujer= 1 hombre=0
-
 proc_data$sexo <- car::recode(proc_data$sexo, "1=0;2=1")
 frq(proc_data$sexo)
 
@@ -367,7 +267,9 @@ dim(proc_data)
 Tabla descriptiva de los datos:
 
 ```{r}
-summarytools::dfSummary(proc_data, plain.ascii = FALSE)
+sjmisc::descr(proc_data,
+              show =c("label","range","mean","sd","NA.prc","n"))%>%
+              kable(.,"markdown")
 ```
 
 Tablas univariadas:
@@ -420,6 +322,8 @@ Escala respecto a la dimensión económica de las variables seleccionadas:
 4\) Situación actual familiar respecto a 12 meses en el futuro.
 
 ```{r}
+data2 <- proc_data %>%
+  select(SEP, PSEP, FMSP, SPF)
 cor(data2)
 ```
 
