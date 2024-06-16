@@ -1,5 +1,0 @@
-"0","proc_data %>% ggplot(aes(x = val_demo)) +"
-"0","  geom_bar(fill = ""blue"")+"
-"0","  labs(title = ""Valoración Democracia"","
-"0","       x = ""Valoración Democracia"","
-"0","       y = ""Frecuencia"")"

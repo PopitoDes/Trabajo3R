@@ -1,1 +1,0 @@
-{"frames":[],"message":"Error: unexpected symbol in:\n\"data_proc <- data_proc %>% dplyr::filter(idenpa==152)\nproc_data <- data_proc %>% rename(\"ns_demo\"\n"}
