@@ -1,7 +1,7 @@
 {
     "id": "1717DA7D",
-    "path": "~/Github/Trabajo3R/Quarto_3R.qmd",
-    "project_path": "Quarto_3R.qmd",
+    "path": "~/Github/Trabajo3R/quarto3.qmd",
+    "project_path": "quarto3.qmd",
     "type": "quarto_markdown",
     "hash": "2048346289",
     "contents": "",
@@ -22,11 +22,11 @@
         "rmdVisualCollapsedChunks": ""
     },
     "folds": "",
-    "lastKnownWriteTime": 1718496707,
+    "lastKnownWriteTime": 1718498818,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1718496707683,
+    "last_content_update": 1718498818085,
     "read_only": false,
     "read_only_alternatives": []
 }
