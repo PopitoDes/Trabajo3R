@@ -1,0 +1,81 @@
+---
+title: "Conformidad nacional"
+author: "Felipe Silva"
+format: 
+ revealjs:
+   theme: serif
+editor: visual
+---
+
+# Introducción:
+
+Conformidad nacional vista como una forma de observar la apreciación de la gente hacia elementos estructurales de la nación, como la democracia, la confianza hacia la gente e instituciones y hacia la conformación de la economía. Esta apreciación se hará de forma cuantitativa con los datos de la encuesta latinobarometro del año 2023 en Chile.
+
+# Exploración de datos:
+
+![](output/graphs/graph2.png)
+
+## Resultados:
+
+::: columns
+::: {.column width="40%"}
+La valoración a la democracia según la edad disminuye en 0.01 a medida que sube una unidad de edad a partir de los 18. El valor cuando la edad es 18 es: 3.24. Valores extrapolables a la población con un 95% de confianza.
+:::
+
+::: {.column width="60%"}
+![](output/graphs/graph1.png)
+:::
+:::
+
+## Resultados:
+
+:::: {.columns}
+
+::: {.column width="40%"}
+En el caso de la posición política, la valoración disminuye en 0.16 en medida que las unidades suben, recordando que 0= izq y 10=der. El intercepto es de 3.75, y es extrapolable con un 99% de confianza.
+:::
+
+::: {.column width="60%"}
+![](output/graphs/graph3.png)
+:::
+:::
+
+## Resultados:
+:::: {.columns}
+
+::: {.column width="40%"}
+Respecto a confianza a fuerzas policiales, considerando sexo y pos. político:
+Las mujeres presentan 0.10 unidades mas confianza que los hombres. Y posición
+política mayor (derecha) mayor confianza, en 0.19 unidades.
+:::
+
+::: {.column width="60%"}
+![](output/graphs/graph4.png)
+:::
+
+::::
+
+## Resultados 
+:::: {.columns}
+
+::: {.column width="40%"}
+Valoración situación económica pais: intercepto de 3.00, donde las mujeres
+tienen un 0.07 unidades menos que hombres. Y posición política: a medida que
+aumenta unidad, disminuye un 0.09. R2=0.6
+:::
+
+::: {.column width="60%"}
+![](output/graphs/graph5.png)
+:::
+
+::::
+
+## Conclusiones:
+
+Usualmente valoraciones mayoramente asociado a la posición
+política, donde los números mayores (derecha) tienen peor percepción economía y
+democracia, pero mejor percepción de las fuerzas policiales.
+
+Bajos R2. Implica mejorar selección variables.
+
+
