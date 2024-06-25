@@ -1,5 +1,5 @@
 ---
-title: "quarto3"
+title: "quarto4"
 author: "Felipe Silva"
 format: html
 editor: visual
@@ -23,7 +23,9 @@ pacman::p_load(sjlabelled,
                psych,
                car,
                tidyverse,
-               haven)
+               haven,
+               texreg,
+               ggpubr)
               
 ```
 
@@ -354,4 +356,56 @@ data2 <- data2 %>%
   mutate(DECO = sum(SEP, PSEP, FMSP, SPF))
 summary(data2$DECO)
 
+```
+
+## Modelos de regresión
+
+Selección de las variables específicas a trabajar: Valoración democracia, edad, sexo, posición política izquierda/derecha, confianza en fuerzas armadas.
+
+```{r}
+proc_data_2 <- subset(proc_data, select = c("izq_der", "val_demo","sexo", "edad","cnf_FA"))
+```
+
+Una vez seleccionadas las variables, genero los modelos de regresión para luego compararlos:
+
+```{r}
+reg2 <- lm(val_demo ~ edad, data=proc_data_2)
+reg3 <- lm(val_demo ~ sexo, data=proc_data_2)
+reg4 <- lm(val_demo ~ izq_der, data=proc_data_2)
+```
+
+```{r}
+knitreg(list(reg2, reg3, reg4),
+        custom.model.names = c("Modelo 1",
+                              "Modelo 2",
+                              "Modelo 3"),
+        custom.note = "*** p < 0.001; ** p < 0.01; * p < 0.05",
+        custom.coef.names = c("Intercepto",
+                              "Edad",
+                              "Mujer (Ref. Hombre)",
+                              "Posición política desde izq a der"),
+        caption = "Valoración democracia",
+        caption.above = TRUE)
+```
+
+El modelo 1 tiene como predictor la edad, el cual tiene un coeficiente de regresión de -0.01, lo que implica que por cada unidad del aumento de la edad la valoración de la democracia disminuye en 0.01 unidades. Esto, lo podemos extrapolar a la sociedad con un 95% de confianza, pues la significancia es del 0.05 (p\<0.05). El intercepto al ser 3.24, implica que una persona con 18 años (el mínimo de edad considerado en los datos) tendría un promedio de 3.24 respecto a la valoración de la democracia. El modelo explica únicamente el 0.01% de la varianza de la variable dependiente (valoración democracia).
+
+El modelo 2, que cuenta con la variable sexo como predictor, tiene un coeficiente de correlación 0.04, lo que significa que, en relación a los hombres, las mujeres tienen 0.04 unidades más en promedio que los hombres de valoración de la democracia, sin embargo, este valor no es significativo. El intercepto implica que los hombres tienen 2.99 unidades de puntuación de la democracia, con un 99% de confianza. El modelo 2, explica el 0% de la varianza de la la variabla dependiente, en este caso: sexo.
+
+Finalmente, el modelo 3, que tiene como variable predictor la posición política con un índice de izquierda (0) a derecha (10), tiene un coeficiente de correlación de -0.16, lo que significa que a medida que aumenta una unidad de posición política disminuye en 0.16 unidades la valoración de la democracia. Esta afirmación es extrapolable a la población con un 99,9% de confianza. El intercepto implica que la posición política 0 tiene 3.75 unidades de valoración de la democracia. Además, explica el 20% de la varianza de la variable dependiente, siendo en este caso el mejor modelo.
+
+## Visualización valores predichos.
+
+```{r}
+ggeffects::ggpredict(reg4, terms = c("izq_der")) %>%
+  ggplot(aes(x=x, y=predicted)) +
+  geom_bar(stat="identity", color="grey", fill="grey")+
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width=.1) +
+  labs(title="Posición política", x = "", y = "") +
+  theme_bw() +
+  scale_x_continuous(name = "",
+                     breaks = c(0,1,2,3,4,5,6,7,8,9,10),
+                     labels = c("0","1", "2","3","4","5","6","7","8","9","10"))+
+  scale_y_continuous(limits = c(0,16), 
+                     breaks = seq(0,16, by = 1))
 ```

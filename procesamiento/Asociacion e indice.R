@@ -171,3 +171,7 @@ data2 <- data2 %>%
   mutate(DECO = sum(SEP, PSEP, FMSP, SPF))
 summary(data2$DECO)
 
+# Guardar base de datos:
+
+save(proc_data, file = "data/data2.RData")
+
