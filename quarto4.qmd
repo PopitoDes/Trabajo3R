@@ -1,11 +1,28 @@
 ---
-title: "quarto4"
+title: "Perpeción nacional: ¿Chile en crisis?"
 author: "Felipe Silva"
+bibliography: Crisis-democratica.bib
 format: html
 editor: visual
 ---
 
-# Conformidad situación nacional
+## Introducción
+
+A partir de la revuelta del 18 de octubre del año 2019 en Chile el debate respecto a los fenómenos políticos que vive la región y que permiten evaluar la condición de la democracia: populismo, distintos movimientos sociales, descontento y polarización política entre otros. Si bien no es una discusión que surge plenamente en este año, tuvo un auge respecto a la cantidad de análisis que intentaron explicar el fenómeno, evidenciando distintos elementos que podrían llegar a las causas de la revuelta.
+
+En términos generales, las sociedades actuales y su nivel de complejidad se presentan como un objeto de estudio desafiante, y sin embargo, presenta similitudes en sus problemáticas respecto a las distintas naciones, la democracia como una de ellas. Un estudio realizado en el contexto de la Unión Europea constata de una situación relativamente generalizable: "La globalización tanto económica como de todas las instancias de poder se ha adueñado de los contextos que dominan la vida de las personas, originando cada día una brecha mayor entre la élite de la sociedad y el resto de los ciudadanos"[@juanantoniosánchez2022]. Con este contexto general, podemos acercarnos el caso chileno.
+
+Una de los análisis explora la posibilidad de que el causante del llamado estallido social de Chile tenga su explicación en la configuración de 4 crisis simultáneas: participación, representación, confianza y probidad [@mauriciomoralesquiroga2020].
+
+Además, desde otro enfoque, es posible considerar aquellos elementos más estructurales; la presencia de enclaves autoritarios que estarían mermando la capacidad de la democracia, a la vez, que el desarrollo económico es insuficiente para disminuior las brechas sociales en la sociedad chilena, de forma que a pesar de las buenas condiciones económicas no resuelven los problemas distributivos de la nación [@nelsonalejandroosoriorauld2019].
+
+Tenemos entonces dos perspectivas que observan de distinta forma crisis estructurales, digamos, visiones desde arriba hacia abajo. Reforzando esto, podemos observar que existe una desafección política enraizada en un miedo hacia la política y un odio a la democracia a través de situaciones violentas como la dictadura, que finalmente predisponen a la ciudadanía contra la política [@cristóbalfriz2021].
+
+\## Metodología
+
+Esto nos acerca a la problemática central del estudio, enfocado en observar la situación nacional a través de la percepción de las personas, observando en específico la percepción de la democracia, confianza a instituciones, y la economía. Para ello, se usarán los datos de la encuesta Latinobarómetro, en específico del año 2023, además, se realizará un filtro para solo observar los casos de Chile.
+
+## Procesamiento de variables
 
 Para observar de forma general la conformidad con la situación nacional en Chile se hará una revisión por distintos variables de la encuesta Latinobarometro.
 
@@ -93,46 +110,19 @@ Y luego cambiamos las etiquetas:
 
 ```{r}
 proc_data$ns_demo <- set_label(x = proc_data$ns_demo,label = "Satisfacción Democracia")
-                          
 proc_data$demo_auto <- set_label(x = proc_data$demo_auto,label = "Pref. Gob. Democrático/Autoritario")
-
-
 proc_data$na_demo <- set_label(x = proc_data$na_demo,label = "NA: Democracia mejor sistema de Gob.")         
-
-
 proc_data$na_nodemo <-set_label(x = proc_data$na_nodemo,label = "NA: Gob. no democrático llegara a resolver problemas")
-
-
 proc_data$na_spdemo <-set_label(x = proc_data$na_spdemo,label = "NA: Democracia permite solución problemas")
-
-
 proc_data$apoyo_gm <-set_label(x = proc_data$apoyo_gm,label = "Apoyo a gobierno militar")
-
-
 proc_data$izq_der <-set_label(x = proc_data$izq_der, label = "Posicionamiento político izq-der")
-
-
 proc_data$cnf_pers <-set_label(x = proc_data$cnf_pers, label = "Confianza en personas")
-
-
 proc_data$cnf_FA <- set_label(x = proc_data$cnf_FA, label = "Confianza Fuerzas Armadas")
-
-
 proc_data$cnf_FP <- set_label(x = proc_data$cnf_FP, label = "Confianza Fuerzas Policiales")
-
-
 proc_data$cnf_PJ <- set_label(x = proc_data$cnf_PJ, label = "Confianza Poder Judicial")
-
-
 proc_data$SEP <- set_label(x = proc_data$SEP, label = "Situación Económica País")
-
-
 proc_data$PSEP <- set_label(x = proc_data$PSEP, label = "Sit. Eco. M/P que pasado")
-
-
 proc_data$FMSP <- set_label(x = proc_data$FMSP, label = "Sit. Eco. M/P que futuro")
-
-
 proc_data$SPF <- set_label(x = proc_data$SPF, label = "Sit. Eco. Personal y familiar")
 
 ```
@@ -223,28 +213,20 @@ frq(proc_data$sexo)
 #Recodoficamos por convención general donde mujer= 1 hombre=0
 proc_data$sexo <- car::recode(proc_data$sexo, "1=0;2=1")
 frq(proc_data$sexo)
-
 frq(proc_data$sexo)
 get_label(proc_data$sexo)
-
 proc_data$sexo <- set_label(x = proc_data$sexo,label = "Sexo")
-
 get_label(proc_data$sexo)
-
 frq(proc_data$sexo)
 
 proc_data$sexo <- set_labels(proc_data$sexo,
                                  labels=c("Mujer"=1,
                                           "Hombre"=0))
 frq(proc_data$sexo)
-
 frq(proc_data$edad)
-
 #Recodificar edad no es necesario, pero cambiamos la etiqueta.
 get_label(proc_data$edad)
-
 proc_data$edad <- set_label(x = proc_data$edad,label ="Edad")
-
 get_label(proc_data$edad)
 ```
 
@@ -279,27 +261,30 @@ Tablas univariadas:
 Valoración democracia:
 
 ```{r}
-ggplot()
-ggplot(proc_data, aes(x = val_demo)) +
-  geom_bar()
+frq(proc_data$val_demo)
+```
+
+```{r}
 proc_data %>% ggplot(aes(x = val_demo)) +
   geom_bar(fill = "blue")+
   labs(title = "Valoración Democracia",
        x = "Valoración Democracia",
-       y = "Frecuencia")
+       y = "Frecuencia") +
+  scale_x_continuous(breaks = c(1, 2, 3, 4),
+                     labels = c("Muy Mala", "Mala", "Buena", "Muy Buena"))
 ```
 
 Situación económica país:
 
 ```{r}
-ggplot()
-ggplot(proc_data, aes(x = SEP)) +
-  geom_bar()
 proc_data %>% ggplot(aes (x = SEP)) +
   geom_bar(fill = "red")+
   labs(title = "Situación Económica País",
        x = "Situación Económica País",
-       y = "Frecuencia")
+       y = "Frecuencia")+
+  scale_x_continuous(breaks = c(1, 2, 3, 4, 5),
+                     labels = c("Muy Mala", "Mala", "Ni buena ni mala", "Buena", "Muy Buena"))
+
 ```
 
 ## Asociación de variables:
@@ -351,10 +336,10 @@ data2$SPF <-car::recode(data2$SPF, "1=0;2=1;3=2;4=3;5=4")
 Y finalmente observamos los datos:
 
 ```{r}
-data2 <- data2 %>%
+proc_data_2 <- proc_data %>%
   rowwise() %>%
   mutate(DECO = sum(SEP, PSEP, FMSP, SPF))
-summary(data2$DECO)
+summary(proc_data_2$DECO)
 
 ```
 
@@ -362,37 +347,38 @@ summary(data2$DECO)
 
 Selección de las variables específicas a trabajar: Valoración democracia, edad, sexo, posición política izquierda/derecha, confianza en fuerzas armadas.
 
-```{r}
-proc_data_2 <- subset(proc_data, select = c("izq_der", "val_demo","sexo", "edad","cnf_FA"))
-```
-
 Una vez seleccionadas las variables, genero los modelos de regresión para luego compararlos:
 
 ```{r}
 reg2 <- lm(val_demo ~ edad, data=proc_data_2)
 reg3 <- lm(val_demo ~ sexo, data=proc_data_2)
 reg4 <- lm(val_demo ~ izq_der, data=proc_data_2)
+reg5 <- lm(val_demo ~ DECO, data=proc_data_2)
 ```
 
-```{r}
-knitreg(list(reg2, reg3, reg4),
+```{r results='asis'}
+knitreg(list(reg2, reg3, reg4, reg5),
         custom.model.names = c("Modelo 1",
                               "Modelo 2",
-                              "Modelo 3"),
+                              "Modelo 3",
+                              "Modeo 4"),
         custom.note = "*** p < 0.001; ** p < 0.01; * p < 0.05",
         custom.coef.names = c("Intercepto",
                               "Edad",
                               "Mujer (Ref. Hombre)",
-                              "Posición política desde izq a der"),
+                              "Posición política desde izq a der",
+                              "Percepción Económica"),
         caption = "Valoración democracia",
         caption.above = TRUE)
 ```
 
 El modelo 1 tiene como predictor la edad, el cual tiene un coeficiente de regresión de -0.01, lo que implica que por cada unidad del aumento de la edad la valoración de la democracia disminuye en 0.01 unidades. Esto, lo podemos extrapolar a la sociedad con un 95% de confianza, pues la significancia es del 0.05 (p\<0.05). El intercepto al ser 3.24, implica que una persona con 18 años (el mínimo de edad considerado en los datos) tendría un promedio de 3.24 respecto a la valoración de la democracia. El modelo explica únicamente el 0.01% de la varianza de la variable dependiente (valoración democracia).
 
-El modelo 2, que cuenta con la variable sexo como predictor, tiene un coeficiente de correlación 0.04, lo que significa que, en relación a los hombres, las mujeres tienen 0.04 unidades más en promedio que los hombres de valoración de la democracia, sin embargo, este valor no es significativo. El intercepto implica que los hombres tienen 2.99 unidades de puntuación de la democracia, con un 99% de confianza. El modelo 2, explica el 0% de la varianza de la la variabla dependiente, en este caso: sexo.
+El modelo 2, que cuenta con la variable sexo como predictor, tiene un coeficiente de regresión 0.04, lo que significa que, en relación a los hombres, las mujeres tienen 0.04 unidades más en promedio que los hombres de valoración de la democracia, sin embargo, este valor no es significativo. El intercepto implica que los hombres tienen 2.99 unidades de puntuación de la democracia, con un 99% de confianza. El modelo 2, explica el 0% de la varianza de la la variabla dependiente, en este caso: sexo.
 
-Finalmente, el modelo 3, que tiene como variable predictor la posición política con un índice de izquierda (0) a derecha (10), tiene un coeficiente de correlación de -0.16, lo que significa que a medida que aumenta una unidad de posición política disminuye en 0.16 unidades la valoración de la democracia. Esta afirmación es extrapolable a la población con un 99,9% de confianza. El intercepto implica que la posición política 0 tiene 3.75 unidades de valoración de la democracia. Además, explica el 20% de la varianza de la variable dependiente, siendo en este caso el mejor modelo.
+El modelo 3, que tiene como variable predictor la posición política con un índice de izquierda (0) a derecha (10), tiene un coeficiente de regresión de -0.16, lo que significa que a medida que aumenta una unidad de posición política disminuye en 0.16 unidades la valoración de la democracia. Esta afirmación es extrapolable a la población con un 99,9% de confianza. El intercepto implica que la posición política 0 tiene 3.75 unidades de valoración de la democracia. Además, explica el 20% de la varianza de la variable dependiente, siendo en este caso el mejor modelo.
+
+Finalmente, el modelo 4, donde el variable predictor es la escala anteriormente construida sobre percepción de la economía, cuenta con un coeficiente de regresión 1.90, lo que implica que, a medida que aumenta una unidad de percepción económica, la valoración a la democracia aumenta en 0.10 unidades. Esto, es extrapolable a la población con un 99,9% de confianza. El valor intercepto de 1.90, significa que, cuando el valor de la percepción económica es 0, la valoroación de la democracia es de 1.90. Por último, este modelo explica el 11% de la varianza de la variable dependiente, por lo que el mejor modelo de regresión es el modelo 3.
 
 ## Visualización valores predichos.
 
@@ -406,6 +392,6 @@ ggeffects::ggpredict(reg4, terms = c("izq_der")) %>%
   scale_x_continuous(name = "",
                      breaks = c(0,1,2,3,4,5,6,7,8,9,10),
                      labels = c("0","1", "2","3","4","5","6","7","8","9","10"))+
-  scale_y_continuous(limits = c(0,16), 
-                     breaks = seq(0,16, by = 1))
+  scale_y_continuous(limits = c(0,5), 
+                     breaks = seq(0,5, by = 1))
 ```
